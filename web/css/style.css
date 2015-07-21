@@ -14,7 +14,8 @@ a.color:hover{color:#333}
 .clear{clear:both}
 ::selection{background:#009999;color:#fff}
 ::-moz-selection{background:#009999;color:#fff}
-embed[type="application/thunder_download_plugin"]{display:none}
+
+li{ list-style-type:none}
 
 .green{color:green}
 .red{color:red}

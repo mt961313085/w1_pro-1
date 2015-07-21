@@ -20,6 +20,8 @@
 			.menu{position:fixed;width:160px;margin:60px 10px 0 10px}
 			.menu li{font-family:"Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif}
 			.tip_num{font-size:10px;background:#ea4f35;padding:3px 5px;border-radius:9px;text-align:center;line-height:100%;color:#fff;width:16px;margin:3px 0;float:right}
+			.info_list{border-radius:3px;background:#A0D408;margin:60px 0 10px 180px;padding:15px 0 5px 0}
+			.info_list li{border-radius:3px;margin:0 10px 10px 10px;background:#FFF;height:160px}
 		</style>
 
 	</head>
@@ -34,16 +36,28 @@
 			<li>Addyston</li>
 			<li>Delphi
 		</ul>
-
+		
+		<ul class='info_list'>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
 	</body>
 
 	<script>
 		$( function() {
-			$('.menu').menu();
+			$('.menu').menu( {
+				select: function( event, ui ) {
+					console.log(  ui.item.attr('id') );
+				} 
+			} );
 			
 			var str = '{"info":[{"id":"001","name":"wdh","comment":[{"p":"u1","s":"whj wer err"},{"p":"u2","s":"gg gg gg"}]},{"id":"002","name":"xxx"}]}';
 			var obj = $.parseJSON( str );
 			console.log( obj );
+			
+			$('.menu').append('<li>wdh</li>');
+			$('.menu').menu( 'refresh' );
 		} );
 	</script>
 		
