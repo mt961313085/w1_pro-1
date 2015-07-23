@@ -14,6 +14,8 @@
 		<script src='./js-lib/jquery.flot.0.8.3.time.min.js'></script>
 
 		<script src='./my-js/ad_ui/ad_ui.js'></script>
+		<script src='./my-js/ad_ui/field_affair.js'></script>
+			
 				
 		<style type='text/css'>
 			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
@@ -38,8 +40,8 @@
 		</ul>
 		
 		<ul class='info_list'>
-			<li></li>
-			<li></li>
+			<li class='a_1'></li>
+			<li class='a_2'></li>
 			<li></li>
 		</ul>
 	</body>
@@ -48,7 +50,7 @@
 		$( function() {
 			$('.menu').menu( {
 				select: function( event, ui ) {
-					console.log(  ui.item.attr('id') );
+					menu_click( ui.item.attr('id') );
 				} 
 			} );
 			
@@ -56,8 +58,11 @@
 			var obj = $.parseJSON( str );
 			//console.log( obj );
 			
-			$('.menu').append('<li>wdh</li>');
+			$('.menu').append('<li id="a_1">wdh</li>');
 			$('.menu').menu( 'refresh' );
+			
+			gen_field_affair_ui( affair );
+			
 		} );
 	</script>
 		
