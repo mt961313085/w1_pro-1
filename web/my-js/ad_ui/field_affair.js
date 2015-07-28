@@ -46,6 +46,17 @@ function gen_field_affair_ui( affair ) {
 
 function gen_field_conflict_apply_ui( affair, ids ) {
 	
+	var tar = $('ul.info_list');
+	var new_li = $( '<li></li>' );
+	tar.append( new_li );
+	
+	var div_l1 = $( '<div class="f_c"><ul></ul></div>' );
+	new_li.append( div_l1 );
+	
+	var ul = div_l1.children( 'ul' );
+	ul.append( $('<li><input name="Fruit" type="radio" checked="checked"/>苹果</li>') );
+	ul.append( $("<li><input type='radio' name='w' value='ww'/></li>") );
+
 	
 }
 
