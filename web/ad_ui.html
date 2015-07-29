@@ -22,12 +22,20 @@
 			.menu{position:fixed;width:160px;margin:60px 10px 0 10px}
 			.menu li{font-family:"Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif}
 			.tip_num{font-size:10px;background:#ea4f35;padding:3px 5px;border-radius:9px;text-align:center;line-height:100%;color:#fff;width:16px;margin:3px 0;float:right}
-			.info_list{border-radius:3px;background:#A0D408;margin:60px 0 10px 180px;padding:15px 0 5px 0}
+			.info_div{margin:60px 0 10px 180px}
+			.info_list{border-radius:3px;background:#A0D408;padding:15px 0 5px 0}
 			.info_list li{border-radius:3px;margin:0 10px 10px 10px;background:#FFF;min-height:160px}
 			
-			.f_c ul{width:100%}
-			.f_c ul li{margin:0;width:100%;height:120px;line-height:120px}
-			input[type='radio']{margin:10px;vertical-align:middle;width:20px;height:16px}
+			.f_c ul{margin-left:10px}
+			.f_c ul li{margin:10px 0 5px 0;width:100%;height:120px;line-height:160px}
+			.f_new{background-color:#FFF8BF;height:40px;line-height:40px;text-align:center;margin-bottom:10px}
+			.f_h{font-size:24px;font-style:italic;padding:16px 0 0 24px;margin-bottom:10px}
+			input[type='radio']{vertical-align:middle;width:20px;height:16px}
+			
+			.field_apply_info{background:#eee;border-radius:3px;margin:0 10px;float:right;height:100%;width:calc(100% - 70px)}
+			.field_apply_info_p{display:inline-block;font-size:16px;line-height:1em;height:1em;margin:20px 10px 5px 20px;width:30%}
+			.field_apply_info_p a{color:blue}
+			.field_apply_info_p a:hover{cursor:hand;font-weight:bold}
 		</style>
 
 	</head>
@@ -35,6 +43,7 @@
 	<body>
 
 		<header class='header'></header>
+
 		<ul class='menu'>
 			<li>查看<em class='tip_num'>5</em></li>
 			<li>Ada</li>
@@ -43,11 +52,14 @@
 			<li>Delphi</li>
 		</ul>
 		
-		<ul class='info_list'>
-			<li class='a_1'></li>
-			<li class='a_2'></li>
-			<li></li>
-		</ul>
+		<div class='info_div'>
+			<p class='f_new'><a>有10条未处理事务</a></p>
+			<ul class='info_list'>
+				<li class='a_1'></li>
+				<li class='a_2'></li>
+				<li></li>
+			</ul>
+		<div>
 	</body>
 
 	<script>
@@ -66,6 +78,7 @@
 			$('.menu').append('<li id="a_16">场地申请<em class="tip_num">7</em></li>');
 			$('.menu').menu( 'refresh' );
 			
+			parse_content( affair );
 			gen_field_affair_ui( affair );
 			
 		} );
