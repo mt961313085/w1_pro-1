@@ -18,6 +18,9 @@
 				. identity
 */
 
+var FIELD_A_ID = 16;			// 场地申请事务 id
+
+
 function add_menu( affair ) {
 	
 	

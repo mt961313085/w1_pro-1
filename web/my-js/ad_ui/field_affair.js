@@ -30,7 +30,6 @@ content - JSON 字符串
 		res:	申请原因
 		
 */
-var FIELD_A_ID = 16;
 
 var affair;
 affair = [{a_id:16,group:1},{a_id:16,group:2},{a_id:16,group:1},{a_id:16,group:3},{a_id:16,group:3},{a_id:17,g:-1}];
@@ -84,7 +83,7 @@ function gen_field_conflict_apply_ui( affair, ids ) {
 				field = mid.com + '-' + mid.cam + '-' + mid.b + '-' + mid.room;		
 			}
 			
-			new_li = $( '<li class="a_' + cur_a.a_id + '"><p class="f_h">' + date + '&nbsp;&nbsp;&nbsp;&nbsp;' + field + '</p></li>' );		
+			new_li = $( '<li class="a_' + cur_a.a_id + '" group="' + cur_a.group+ '"><p class="f_h">' + date + '&nbsp;&nbsp;&nbsp;&nbsp;' + field + '</p></li>' );		
 			tar.append( new_li );	
 			
 			div_l1 = $( '<div class="f_c"><ul></ul></div>' );
@@ -108,10 +107,43 @@ function gen_field_conflict_apply_ui( affair, ids ) {
 			
 	} );
 	
-	div_l1.append( $('<div class="field_wall"><a>查看意见</a></div>') );
-	div_l1.append( $('<div class="field_wall"><a>填写意见</a></div>') );		
-	div_l1.append( $('<div class="field_wall" style="padding:10px 0"><input class="button" type="submit" value="同意" /><input class="button" type="submit" value="全部拒绝" /></div>') );
+	//div_l1.append( $('<div class="field_wall"><a>查看意见</a></div>') );
+	div_l1.append( $('<div class="field_wall"><a class="fill_comment_a">填写意见</a></div>') );		
+	div_l1.append( $('<div class="field_wall" style="padding:10px 0"><input class="button c_agree" type="submit" value="同意" /><input class="button c_refuse" type="submit" value="全部拒绝" /></div>') );
 	
+	div_l1.find('a.fill_comment_a').click( function() {
+		var a = $(this);
+		var parent = a.parent();
+		
+		var text_area = parent.find( 'textarea.comment_textarea' );
+		if( text_area.length<=0 ) {
+			parent.append( $('<textarea class="comment_textarea"></textarea>') );
+			text_area = parent.find( 'textarea.comment_textarea' );
+			return;
+		}
+		
+		if( text_area.is(":visible") )
+			text_area.hide();
+		else
+			text_area.show();
+	} );
+	
+	div_l1.find('input.c_agree').click( function() {
+		$(this).parents('li').hide( 'drop', 500, function() {
+			var remove_group = $(this).attr('group');
+			$(this).remove();
+			
+		} );
+		
+	} );
+	
+	div_l1.find('input.c_refuse').click( function() {
+		$(this).parents('li').hide( 'drop', 500, function() {
+			var remove_group = $(this).attr('group');
+			$(this).remove();
+		} );
+		
+	} );
 }
 
 function gen_field_normal_apply_ui( affair, ids ) {
@@ -139,9 +171,41 @@ function gen_field_normal_apply_ui( affair, ids ) {
 	new_li.append( $('<p class="field_apply_info_p"><b>申请日期:</b>&nbsp;&nbsp;&nbsp;&nbsp;'+formatDate_2(cur_a.apply_t)+'</p>' ) );
 	new_li.append( $('<p class="field_apply_info_p" style="height:4.5em;line-height:1.5em;width:100%"><b>申请事由:</b><br>'+cur_a.c_obj.res+'</p>') );
 	
-	new_li.append( $('<div class="field_wall"><a>查看意见</a></div>') );
-	new_li.append( $('<div class="field_wall"><a>填写意见</a></div>') );
-	new_li.append( $('<div class="field_wall" style="padding:10px 0"><input class="button" type="submit" value="同意" /><input class="button" type="submit" value="拒绝" /></div>') );
+	//new_li.append( $('<div class="field_wall"><a>查看意见</a></div>') );
+	new_li.append( $('<div class="field_wall"><a class="fill_comment_a">填写意见</a></div>') );
+	new_li.append( $('<div class="field_wall" style="padding:10px 0"><input class="button agree" type="submit" value="同意" /><input class="button refuse" type="submit" value="拒绝" /></div>') );
+
+	new_li.find('a.fill_comment_a').click( function() {
+		var a = $(this);
+		var parent = a.parent();
+		
+		var text_area = parent.find( 'textarea.comment_textarea' );
+		if( text_area.length<=0 ) {
+			parent.append( $('<textarea class="comment_textarea"></textarea>') );
+			text_area = parent.find( 'textarea.comment_textarea' );
+			return;
+		}
+		
+		if( text_area.is(":visible") )
+			text_area.hide();
+		else
+			text_area.show();
+		
+	} );
+	
+	new_li.find('input.agree').click( function() {
+		$(this).parents('li').hide( 'drop', 500, function() {
+			$(this).remove();
+		} );
+		
+	} );
+	
+	new_li.find('input.refuse').click( function() {
+		$(this).parents('li').hide( 'drop', 500, function() {
+			$(this).remove();
+		} );
+		
+	} );
 }
 
 function get_unique( affair ) {
@@ -167,4 +231,14 @@ function count_with_group( affair, g_val ) {
 	} );
 	
 	return res;
+}
+
+function remove_field_applys_with_group( group )) {
+	
+	$.each( affair, function(i, v) {
+		if( 'group' in v  && v.a_id==FIELD_A_ID ) {
+			
+		}
+	} );
+	
 }
