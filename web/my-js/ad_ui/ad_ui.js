@@ -28,7 +28,7 @@ function menu_click( clicked_id ) {
 	
 	$('ul.info_list li').show();
 	
-	var tar_str = 'ul.info_list li[class!="'+clicked_id+'"]';
+	var tar_str = 'ul.info_list > li[class!="'+clicked_id+'"]';
 	$(tar_str).hide();
 	
 }
