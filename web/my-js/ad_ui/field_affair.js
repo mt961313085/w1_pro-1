@@ -43,6 +43,8 @@ affair[1].proposer = '匿名者2';
 affair[1].id = 'a002';
 affair[1].apply_t = 7200;
 
+affair[2].id = 'a003';
+
 function gen_field_affair_ui( affair ) {
 	var u_id = get_unique( affair );
 
@@ -129,20 +131,11 @@ function gen_field_conflict_apply_ui( affair, ids ) {
 	} );
 	
 	div_l1.find('input.c_agree').click( function() {
-		$(this).parents('li').hide( 'drop', 500, function() {
-			var remove_group = $(this).attr('group');
-			$(this).remove();
-			
-		} );
-		
+		agree( $(this) );
 	} );
 	
 	div_l1.find('input.c_refuse').click( function() {
-		$(this).parents('li').hide( 'drop', 500, function() {
-			var remove_group = $(this).attr('group');
-			$(this).remove();
-		} );
-		
+		refuse( $(this) );
 	} );
 }
 
@@ -163,7 +156,7 @@ function gen_field_normal_apply_ui( affair, ids ) {
 		field = mid.com + '-' + mid.cam + '-' + mid.b + '-' + mid.room;		
 	}
 			
-	new_li = $( '<li class="a_'+ cur_a.a_id + '"><p class="f_h">' + date + '&nbsp;&nbsp;&nbsp;&nbsp;' + field + '</p></li>' );		
+	new_li = $( '<li class="a_'+ cur_a.a_id + '" group="' + cur_a.group + '" apply="' + cur_a.id + '"><p class="f_h">' + date + '&nbsp;&nbsp;&nbsp;&nbsp;' + field + '</p></li>' );		
 	tar.append( new_li );
 	
 	new_li.append( $('<p class="field_apply_info_p"><b>申请人:</b><a>&nbsp;&nbsp;&nbsp;&nbsp;'+cur_a.proposer+'</a></p>') );
@@ -194,19 +187,108 @@ function gen_field_normal_apply_ui( affair, ids ) {
 	} );
 	
 	new_li.find('input.agree').click( function() {
-		$(this).parents('li').hide( 'drop', 500, function() {
-			$(this).remove();
-		} );
-		
+		agree( $(this) );
 	} );
 	
 	new_li.find('input.refuse').click( function() {
-		$(this).parents('li').hide( 'drop', 500, function() {
-			$(this).remove();
-		} );
-		
+		refuse( $(this) );
 	} );
 }
+
+// trigger - jquery 对象
+function agree( trigger ) {
+	
+	var res_obj = new Object();
+	res_obj.agree = new Array();
+	res_obj.refuse = new Array();
+	
+	var p_li = trigger.parents( 'li[group]' );
+	
+	var if_c_agree = trigger.attr( 'class' ).indexOf( 'c_agree' );
+	
+	if( if_c_agree>=0 ) {		// 冲突的场地申请 
+		// 获取同意请求 li
+		var agree_apply = p_li.find( 'div.f_c ul li[apply] input[type="radio"]:checked' );
+		if( agree_apply.length<=0 )
+			return;
+		else
+			res_obj.agree.push( agree_apply.eq(0).parent('li').attr('apply') );
+		
+		// 获取拒绝的请求 li
+		var refuse_apply = p_li.find( 'div.f_c ul li[apply] input[type="radio"]:not(:checked)' );
+		if( refuse_apply.length<=0 )
+			return;
+		else {
+			$.each( refuse_apply, function(i,v) {
+				res_obj.refuse.push( $(v).parent('li').attr('apply') );
+			} );
+		}
+	}
+	else {						// 正常场地申请
+		res_obj.agree.push( p_li.attr('apply') );
+	}
+	
+	// 获取意见
+	var comm_obj = p_li.find( 'textarea.comment_textarea' );
+	if( comm_obj.length>0 )
+		res_obj.comm = comm_obj.val();	
+	else
+		res_obj.comm = '';
+	
+	agree_refuse_click( p_li, res_obj );
+}
+
+function refuse( trigger ) {
+	
+	var res_obj = new Object();
+	res_obj.agree = new Array();
+	res_obj.refuse = new Array();
+	
+	var p_li = trigger.parents( 'li[group]' );
+	
+	var if_c_refuse = trigger.attr( 'class' ).indexOf( 'c_refuse' );
+	
+	if( if_c_refuse>=0 ) {		// 冲突的场地申请 
+		var refuse_apply = p_li.find( 'div.f_c ul li[apply]' );
+		$.each( refuse_apply, function(i,v) {
+			res_obj.refuse.push( $(v).attr('apply') );
+		} );
+	}
+	else {						// 正常场地申请
+		res_obj.refuse.push( p_li.attr('apply') );
+	}
+	
+	// 获取意见
+	var comm_obj = p_li.find( 'textarea.comment_textarea' );
+	if( comm_obj.length>0 )
+		res_obj.comm = comm_obj.val();	
+	else
+		res_obj.comm = '';
+	
+	agree_refuse_click( p_li, res_obj );
+}
+
+function agree_refuse_click( p_li, res_obj ) {
+	
+	p_li.hide( 'drop', 500, function() {
+		var remove_group = p_li.attr('group');
+		p_li.remove();
+		remove_field_applys_with_group( remove_group );
+		// 更新 menu 上的数量
+	} );
+			
+/*	
+	$.post( '', res_obj, function( res ) {
+		if( res=='OK' )
+			p_li.hide( 'drop', 500, function() {
+				var remove_group = p_li.attr('group');
+				p_li.remove();
+				remove_field_applys_with_group( remove_group );
+				// 更新 menu 上的数量
+			} );
+	} );
+*/
+} 
 
 function get_unique( affair ) {
 	var unique_id = new Array();
@@ -233,12 +315,12 @@ function count_with_group( affair, g_val ) {
 	return res;
 }
 
-function remove_field_applys_with_group( group )) {
+function remove_field_applys_with_group( group ) {
 	
-	$.each( affair, function(i, v) {
-		if( 'group' in v  && v.a_id==FIELD_A_ID ) {
-			
+	for( var i=affair.length-1; i>-1; i-- ) {
+		if( 'group' in affair[i] && affair[i].a_id==FIELD_A_ID ) {
+			if( affair[i].group==group )
+				affair.splice( i, 1 );
 		}
-	} );
-	
+	}
 }
