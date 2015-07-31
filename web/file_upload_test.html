@@ -1,0 +1,116 @@
+<html>
+
+    <head>
+		<meta charset='UTF-8' http-equiv='X-UA-Compatible' content='IE=edge'>
+		<title></title>
+
+		<link rel='stylesheet' type='text/css' href='./css/style.css'>
+		<link rel='stylesheet' href='./js-lib/jquery-ui.min.css'>
+
+		<script src='./js-lib/jquery-2.1.1.min.js'></script>
+		<script src='./js-lib/jquery-ui.min.js'></script>
+		<script src='./js-lib/jquery.base64.js'></script>
+				
+			
+		<style type='text/css'>
+			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
+			input[type="file"]{width:200px;height:90px;margin:90px}
+		</style>
+<!--		
+		<style>
+			a{text-align:center;display:inline-block;width:100px;height:40px;background:red;position:relative;verflow:hidden;margin:100px;line-height:40px}
+			a:hover{background:green;}
+			input{position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);}
+		</style>
+ -->
+<!--
+		<script type="text/javascript">
+			function DragStart(){
+				event.dataTransfer.effectAllowed="copy";
+			}
+			
+			function Drop( ){
+				DragOver();          
+				event.srcElement.innerText=event.srcElement.innerText+event.dataTransfer.getData("text");
+				console.log( event.dataTransfer.files );
+				
+			}
+			
+			function DragEnter(){
+				DragOver();
+				event.dataTransfer.dropEffect="copy";
+			}
+			
+			function DragOver(){
+				event.returnValue=false;
+			}
+			
+			function InitiateDrag(){   
+				event.dataTransfer.setData("URL", document.getElementById("oSource").href);    
+			}
+
+			function FinishDrag(){
+				document.getElementById("oTarget").innerText = event.dataTransfer.getData("URL");
+			}
+		</script>
+-->
+	</head>
+
+	<body>
+
+		<header class='header'></header>
+		<a><input type='file' id='f_u' name='selectFiles' /></a>
+<!--
+		<a href='#'>
+			文件上传
+			<input type='file' id='f_u' value='selectFiles' />
+		</a>
+
+
+		<a id="oSource" href="http://www.sohu.com" ondragstart="InitiateDrag()" onclick="return false;" >Test Anchor</a>
+		<span id="oTarget" ondragenter="FinishDrag()">Drop Here</span>
+	
+
+		<span ondragstart="DragStart()">
+			This Is A Test String.
+		</span>
+		<p></p>
+		
+		<div id='dv' style='border:solid 1px black;height:150px;width:200px' ondrop='Drop()' ondragover='DragOver()' ondragenter='DragEnter()' >
+			[Drop To Here]
+		</div>
+-->	
+	</body>
+
+	<script>
+		$( function() {
+			$('#f_u').change( function() {
+			
+				var file = $(this)[0].files[0];
+				//console.log( file );
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					//console.log( this.result );
+					console.log( this.result.length );
+					$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
+						console.log( res );
+						//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
+					} );
+				};
+				
+				reader.onprogress = function(e) { 
+					//console.log( e.loaded );
+				};
+				
+				reader.readAsBinaryString( file );
+				//reader.readAsText( file );
+			} );
+			
+		} );
+	</script>
+
+	<script>
+	</script>
+
+</html>
