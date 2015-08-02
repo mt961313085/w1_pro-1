@@ -14,10 +14,13 @@
 			
 		<style type='text/css'>
 			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
-			.file_upload_plugin{margin:70px 400px}
-			.droppable{padding:0.5em;width:150px;height:150px;text-align:center;background:#4fc1e9}
 			
-			input[type="file"]{opacity:0;width:100%;height:100%}
+			.file_upload_plugin{width:300px;height:250px;border:solid 2px #aaa;padding:5px;margin:70px 400px}
+			.file_upload_plugin a{width:30px;height:2em;margin-top:10px;float:right;overflow:hidden}
+			a.upload{margin-right:0;margin-left:20px}		
+			.droppable{width:100%;height:100%;text-align:center}
+			
+			input[type="file"]{display:none;width:30px;height:2em}
 		</style>
 <!--		
 		<style>
@@ -31,15 +34,16 @@
 	<body>
 
 		<header class='header'></header>
+		<input type='file' id='f_u' name='selectFiles'/>
 		
 		<div class='file_upload_plugin'>
 			<div id='file_upload_area' class='droppable' draggable='true'>
 				<img />
 			</div>
+			
 			<a class='upload'>上传</a>
+			<a class='browse'>浏览</a>
 		</div>
-		
-		<!--<a><input type='file' id='f_u' name='selectFiles'/></a>-->
 		
 	</body>
 
@@ -93,32 +97,30 @@
 			} );
 		
 			$('.file_upload_plugin a.upload').click( function() {
-				console.log( upload_file );
-			
+				
+				if( typeof(upload_file)!='undefined' ) {
+					var reader = new FileReader();
+					reader.onload = function() { 
+						//console.log( this.result.length );
+						$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
+							console.log( res );
+							//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
+						} );
+					};
+					
+					reader.readAsBinaryString( upload_file );
+				}
+
 			} );
-/*
+			
+			$('.file_upload_plugin a.browse').click( function(e) {
+				$('#f_u').trigger('click');
+			} );
+			
 			$('#f_u').change( function() {
-			
-				var file = $(this)[0].files[0];
-				//console.log( file );
-				
-				var reader = new FileReader();
-				reader.onload = function() { 
-					console.log( this.result.length );
-					$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
-						console.log( res );
-						//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
-					} );
-				};
-				
-				reader.onprogress = function(e) { 
-					//console.log( e.loaded );
-				};
-				
-				reader.readAsBinaryString( file );
-				//reader.readAsText( file );
+				upload_file = $(this)[0].files[0];
 			} );
-*/			
+						
 		} );
 	</script>
 
