@@ -1,0 +1,128 @@
+<html>
+
+    <head>
+		<meta charset='UTF-8' http-equiv='X-UA-Compatible' content='IE=edge'>
+		<title></title>
+
+		<link rel='stylesheet' type='text/css' href='./css/style.css'>
+		<link rel='stylesheet' href='./js-lib/jquery-ui.min.css'>
+
+		<script src='./js-lib/jquery-2.1.1.min.js'></script>
+		<script src='./js-lib/jquery-ui.min.js'></script>
+		<script src='./js-lib/jquery.base64.js'></script>
+				
+			
+		<style type='text/css'>
+			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
+			.file_upload_plugin{margin:70px 400px}
+			.droppable{padding:0.5em;width:150px;height:150px;text-align:center;background:#4fc1e9}
+			
+			input[type="file"]{opacity:0;width:100%;height:100%}
+		</style>
+<!--		
+		<style>
+			a{text-align:center;display:inline-block;width:100px;height:40px;background:red;position:relative;verflow:hidden;margin:100px;line-height:40px}
+			a:hover{background:green;}
+			input{position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);}
+		</style>
+ -->
+	</head>
+
+	<body>
+
+		<header class='header'></header>
+		
+		<div class='file_upload_plugin'>
+			<div id='file_upload_area' class='droppable' draggable='true'>
+				<img />
+			</div>
+			<a class='upload'>上传</a>
+		</div>
+		
+		<!--<a><input type='file' id='f_u' name='selectFiles'/></a>-->
+		
+	</body>
+
+	<script>
+		var upload_file;
+		
+		$( function() {
+		
+			$('#file_upload_area').bind( {
+				drop: function(e) {
+				
+					e.preventDefault();
+					
+					var oe = e.originalEvent;
+					var file_list = oe.dataTransfer.files;
+					if( file_list.length>0 ) {
+					
+						upload_file = file_list[0];
+						
+						var reader = new FileReader();
+						reader.onload = function() { 
+							var image = $('#file_upload_area').children('img');
+							image.bind( 'load', function() {
+								var r1 = $('#file_upload_area').height() / $('#file_upload_area').width();
+								var r2 = $(this).height() / $(this).width();
+								if( r2<r1 ) {
+									$(this).css('width','100%');
+									$(this).css('height','auto');
+									
+									var m_top = ( $('#file_upload_area').height()-$(this).height() ) / 2;
+									$(this).css('margin-top',m_top);
+								}
+								else {
+									$(this).css('height','100%');
+									$(this).css('width','auto');
+									$(this).css('margin','auto');
+								}
+								
+							} );
+							image.attr('src', this.result);
+						};
+						
+						reader.readAsDataURL( upload_file );
+						
+					}
+				},
+				dragover: function(e) {
+					e.preventDefault();
+					return true;
+				}
+			} );
+		
+			$('.file_upload_plugin a.upload').click( function() {
+				console.log( upload_file );
+			
+			} );
+/*
+			$('#f_u').change( function() {
+			
+				var file = $(this)[0].files[0];
+				//console.log( file );
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					console.log( this.result.length );
+					$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
+						console.log( res );
+						//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
+					} );
+				};
+				
+				reader.onprogress = function(e) { 
+					//console.log( e.loaded );
+				};
+				
+				reader.readAsBinaryString( file );
+				//reader.readAsText( file );
+			} );
+*/			
+		} );
+	</script>
+
+	<script>
+	</script>
+
+</html>
