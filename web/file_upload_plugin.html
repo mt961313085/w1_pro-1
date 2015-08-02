@@ -56,39 +56,10 @@
 				drop: function(e) {
 				
 					e.preventDefault();
-					
 					var oe = e.originalEvent;
 					var file_list = oe.dataTransfer.files;
-					if( file_list.length>0 ) {
-					
-						upload_file = file_list[0];
-						
-						var reader = new FileReader();
-						reader.onload = function() { 
-							var image = $('#file_upload_area').children('img');
-							image.bind( 'load', function() {
-								var r1 = $('#file_upload_area').height() / $('#file_upload_area').width();
-								var r2 = $(this).height() / $(this).width();
-								if( r2<r1 ) {
-									$(this).css('width','100%');
-									$(this).css('height','auto');
-									
-									var m_top = ( $('#file_upload_area').height()-$(this).height() ) / 2;
-									$(this).css('margin-top',m_top);
-								}
-								else {
-									$(this).css('height','100%');
-									$(this).css('width','auto');
-									$(this).css('margin','auto');
-								}
-								
-							} );
-							image.attr('src', this.result);
-						};
-						
-						reader.readAsDataURL( upload_file );
-						
-					}
+				
+					show_image( file_list );
 				},
 				dragover: function(e) {
 					e.preventDefault();
@@ -119,12 +90,48 @@
 			
 			$('#f_u').change( function() {
 				upload_file = $(this)[0].files[0];
+				show_image( $(this)[0].files );
 			} );
 						
 		} );
 	</script>
 
 	<script>
+		function show_image( file_list ) {
+		
+			if( file_list.length>0 ) {
+						
+				upload_file = file_list[0];
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					var image = $('#file_upload_area').children('img');
+					image.bind( 'load', function() {
+						var r1 = $('#file_upload_area').height() / $('#file_upload_area').width();
+						var img = $('#file_upload_area img');
+						var r2 = img.height() / img.width();
+						
+						if( r2<r1 ) {
+							img.css('width','100%');
+							img.css('height','auto');
+							
+							var m_top = ( $('#file_upload_area').height()-img.height() ) / 2;
+							img.css('margin-top',m_top);
+						}
+						else {
+							img.css('height','100%');
+							img.css('width','auto');
+							img.css('margin','auto');
+						}
+						
+					} );
+					image.attr('src', this.result);
+				};
+				
+				reader.readAsDataURL( upload_file );
+				
+			}
+		};
 	</script>
 
 </html>
