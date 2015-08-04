@@ -1,0 +1,80 @@
+<html>
+
+    <head>
+		<meta charset='UTF-8' http-equiv='X-UA-Compatible' content='IE=edge'>
+		<title></title>
+
+		<link rel='stylesheet' type='text/css' href='./css/style.css'>
+		<link rel='stylesheet' href='./js-lib/jquery-ui.min.css'>
+
+		<script src='./js-lib/jquery-2.1.1.min.js'></script>
+		<script src='./js-lib/jquery-ui.min.js'></script>
+		<script src='./js-lib/jquery.base64.js'></script>
+				
+			
+		<style type='text/css'>
+			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
+			
+			.person_info_show{width:360px;height:280px;border:solid 2px #aaa;padding:5px;margin:70px 400px}
+			.person_info_show table{width:100%;height:100%}
+			td.long_td{height:45%}
+			td.photo_td img{width:100%;height:100%}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<header class='header'></header>
+		
+		<div class='person_info_show'>
+			<table cellspacing='0' cellpadding='0' >
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+					<td rowspan='3' class='photo_td'><img /></td>
+				</tr>
+				
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+				</tr>
+				
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+				</tr>
+				
+				<tr>
+					<td colspan='3' class='long_td'></td>
+				</tr>
+			</table>
+		</div>
+		
+	</body>
+
+	<script>
+		
+		$( function() {
+			person_info_table_init( $('.person_info_show > table') );
+						
+		} );
+		
+		
+		function person_info_table_init( table_obj ) {
+			
+			var t_w = table_obj.width();
+			var t_h = table_obj.height();
+			var long_td_h = table_obj.find('td.long_td').height();
+			
+			table_obj.find('td.label_td, td.value_td').height( (t_h-long_td_h)/3 );
+			var photo_w = (t_h-long_td_h)*0.8;
+			table_obj.find('td.photo_td').width( photo_w );
+			table_obj.find('td.label_td, td.value_td').width( (t_w-photo_w)/2 );
+		}
+		
+	</script>
+
+
+</html>

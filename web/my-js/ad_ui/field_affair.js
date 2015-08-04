@@ -62,6 +62,13 @@ function gen_field_affair_ui( affair ) {
 		};
 		
 	} );
+	
+	$('p.field_apply_info_p a').click( function(e) {
+		var target = $('div.person_info_show');
+		target.css( {'left':e.pageX,'top':e.pageY} );
+		target.show();
+		e.stopPropagation();
+	} );
 }
 
 function gen_field_conflict_apply_ui( affair, ids ) {
@@ -97,7 +104,7 @@ function gen_field_conflict_apply_ui( affair, ids ) {
 		ul.append( item );
 		
 		var apply_info = item.children( 'div[class="field_apply_info"]' );
-		apply_info.append( $('<p class="field_apply_info_p"><b>申请人:</b><a>&nbsp;&nbsp;&nbsp;&nbsp;'+cur_a.proposer+'</a></p>') );
+		apply_info.append( $('<p class="field_apply_info_p"><b>申请人:</b><a>&nbsp;&nbsp;&nbsp;&nbsp;'+cur_a.proposer+'</a></p>') );	
 		
 		if( typeof(cur_a.c_obj)!="undefined" )
 			apply_info.append( $('<p class="field_apply_info_p"><b>申请使用时段:</b>&nbsp;&nbsp;&nbsp;&nbsp;'+cur_a.c_obj.t.t1+':0:0 - '+(cur_a.c_obj.t.t2+1)+':0:0</p>') );

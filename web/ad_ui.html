@@ -17,7 +17,6 @@
 		<script src='./my-js/ad_ui/field_affair.js'></script>			
 				
 		<style type='text/css'>
-			.header{position:fixed;top:0;width:100%;height:50px;background:#FB6651}
 			.menu{position:fixed;width:160px;margin:60px 10px 0 10px}
 			.menu li{font-family:"Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif}
 			.tip_num{font-size:10px;background:#ea4f35;padding:3px 5px;border-radius:9px;text-align:center;line-height:100%;color:#fff;width:16px;margin:3px 0;float:right}
@@ -42,6 +41,10 @@
 			input[type="submit"]{border-radius:0;float:right;margin:0 10px;padding:10px 40px;cursor:hand;color:#fff;background:#09f}
 			input[type="submit"]:hover{background:#015BF1}
 			
+			.person_info_show{position:absolute;width:640px;height:240px;background:#fff;border:solid 2px #aaa;padding:5px}
+			.person_info_show table{width:100%;height:100%}
+			td.long_td{height:45%}
+			td.photo_td img{width:100%;height:100%}
 		</style>
 
 	</head>
@@ -65,10 +68,43 @@
 				<li class='a_2'></li>
 			</ul>
 		<div>
+		
+		
+		<div class='person_info_show'>
+			<table cellspacing='0' cellpadding='0' >
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+					<td rowspan='3' class='photo_td'><img /></td>
+				</tr>
+				
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+				</tr>
+				
+				<tr>
+					<td class='label_td'></td>
+					<td class='value_td'></td>
+				</tr>
+				
+				<tr>
+					<td colspan='3' class='long_td'></td>
+				</tr>
+			</table>
+		</div>
+		
 	</body>
 
 	<script>
 		$( function() {
+		
+			$('body').click( function() {
+				$('.person_info_show').hide();
+			} );
+			
+			person_info_table_init( $('.person_info_show > table') );
+		
 			$('.menu').menu( {
 				select: function( event, ui ) {
 					menu_click( ui.item.attr('id') );
@@ -77,7 +113,6 @@
 			
 			var str = '{"info":[{"id":"001","name":"wdh","comment":[{"p":"u1","s":"whj wer err"},{"p":"u2","s":"gg gg gg"}]},{"id":"002","name":"xxx"}]}';
 			var obj = $.parseJSON( str );
-			//console.log( obj );
 			
 			$('.menu').append('<li id="a_1">wdh</li>');
 			$('.menu').append('<li id="a_16">场地申请<em class="tip_num">7</em></li>');
@@ -92,6 +127,21 @@
 	</script>
 		
 	<script>
+		function person_info_table_init( table_obj ) {
+			
+			var t_w = table_obj.width();
+			var t_h = table_obj.height();
+			var long_td_h = table_obj.find('td.long_td').height();
+			
+			table_obj.find('td.label_td, td.value_td').height( (t_h-long_td_h)/3 );
+			var photo_w = (t_h-long_td_h)*0.8;
+			table_obj.find('td.photo_td').width( photo_w );
+			table_obj.find('td.label_td, td.value_td').width( (t_w-photo_w)/2 );
+			
+			var table_p = table_obj.parent();
+			table_p.draggable();
+			table_p.hide();
+		}
 	</script>
 
 </html>
