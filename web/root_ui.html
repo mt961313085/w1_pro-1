@@ -15,10 +15,16 @@
 	<script src='./my-js/root_ui/root_ui.js'></script>
 
 	<style type='text/css'>
-		table.devs_table{width:100%;border-spacing:0 16px}
-		table.devs_table tr{width:100%;height:42px}
-		table.devs_table tr:nth-child(odd){background:#eee}
-		table.hover_table tr:hover{opacity:0.5}
+		
+		table.user_table{width:100%;border-spacing:0 16px}
+		table.user_table tr{width:100%;height:42px}
+		table.user_table tr:nth-child(odd){background:#eee}
+		table.user_table td{text-align:center;line-height:42px}
+		table.user_table td.user_set{font-size:13px}
+		table.user_table a{color:blue;cursor:pointer}
+		
+		table.user_table td.user_set a{margin-left:20px}
+		table.user_table input[type=checkbox]{position:relative;top:2px;width:14px;height:14px;margin-right:6px;}
 		
 		.tool_bar{font-size:18px;background:#fff;height:42px;line-height:42px;margin-bottom:10px}
 		.tool_bar > a{font-size:20px;margin-left:78%}
@@ -86,23 +92,20 @@
 				<section class="tab-item-1">
 					<div class='tool_bar'>
 						<span>
-							<input type='search' placeholder='Search'/><a><i class='fa fa-search'></i></a>
+							<input type='search' placeholder='Search'/><a class='icon_search'><i class='fa fa-search'></i></a>
 						</span>
 						<a title='增加用户'><i class='fa fa-user-plus'></i></a>
 					</div>
 					
-					<table class="devs_table hover_table">
+					<table class="user_table hover_table">
 						<tbody>
 							<tr style='background:#aaa;color:#fff'>
-								<!--<th class='choose_th'><input type='checkbox' class='choose_box' id='choose_all'/><span class='choose_box_p'>全选</span></th>-->
-								<th width='6%'>ID</th>
-								<th width="24%">用户名</th>
-								<th width="15%">身份</th>
-								<th width="20%">设置</th>
+								<th width='7%'>ID</th>
+								<th width='30%'>用户名</th>
+								<th width='10%'>身份</th>
+								<th width='33%'>权限</th>
+								<th class='user_set'>设置</th>
 							</tr>
-							<tr><td></td></tr>
-							<tr><td></td></tr>
-							<tr><td></td></tr>
 						</tbody>
 					</table>
 				</section>
@@ -118,6 +121,10 @@
 	
 	<script>
 		$( function() {
+		
+			var user_tab = $('.tab-content .tab-item-1 .user_table');
+			list_user( user_tab );
+			
 			$('input[type="radio"]').click( function() {
 				console.log('www');
 				/*
