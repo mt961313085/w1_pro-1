@@ -1,0 +1,74 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	
+	<link rel='stylesheet' type='text/css' href='css/style.css'>
+	<link rel="stylesheet" href="css/background/css/font-awesome.min.css">
+		
+	<script src='js-lib/jquery-2.1.1.min.js'></script>
+	
+	<style type='text/css'>
+		.login_div{position:relative;left:400px;width:469px;background:#f5f5f5}
+		h2{font-size:30px;margin-top:20px;margin-bottom:32px}
+		.login_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:340px;height:44px;border-radius:0}
+		.login_div input:focus{border-color:#00a2e8;box-shadow:0 0 8px rgba(0,162,232,1),0 0 5px rgba(0,162,232,.75)}
+		
+		
+		div.reg_lable{margin-bottom:1.5em;color:#fff;text-align:center;display:inline-block;height:44px;width:128px;background:#93B9C6;line-height:44px}
+		.login_div select{width:100px;font-family:"Microsoft Yahei";position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		#input-id{width:236px}
+		
+		.login_div button{margin-left:175px;background-color:#524769;cursor:pointer;color:#fff;width:120px;height:44px}	
+		.login_div button:hover{border-color:#204d74;background-color:#286090}
+		
+		i.fa{position:absolute;right:0}
+		i.fa:hover{opacity:0.5}
+	</style>
+		
+</head>
+
+<body>
+	<div class='login_div'>
+		<i class='fa fa-close'></i>
+		<form action='' method='post'>
+			<h2 class="login-heading">注 册</h2>
+			<div class='reg_lable'>电子邮件</div><input type="email" id="input-email" placeholder="电子邮件地址（必填）" required='required' autofocus='autofocus' />
+			<br/>
+			<div class='reg_lable'>证件类型</div>
+			<select name='id_type'> 
+				<option value='0'>学生证</option> 
+				<option value='1'>身份证</option> 
+			</select> 
+			<input type="text" id="input-id" placeholder="证件号（必填）" required='required' />
+			<br/>
+			<div class='reg_lable'>身份</div>
+			<select name='role'> 
+				<option value='0'>学生个人</option> 
+				<option value='1'>工作人员</option> 
+				<option value='2'>指导老师</option>
+				<option value='3'>评审专家</option> 
+				<option value='4'>投资人</option> 
+			</select>
+			
+			<div class='reg_lable'>性别</div>
+			<select name='sex' style='width:108px'> 
+				<option value='0'>女</option> 
+				<option value='1'>男</option> 
+			</select>
+			
+			<br/>
+			<div class='reg_lable'>密码</div><input type="password" id="input-password" placeholder="密码（必填）" required='required' />
+			<br/>
+			<div class='reg_lable'>密码确认</div><input type="password" id="input-password" placeholder="再次输入密码（必填）" required='required' />
+			
+			<br/><br/><br/>
+			<div class='reg_lable'>学院/机构</div><input type="text" id="input-com" placeholder="所在学院或单位" />
+			<br/>
+			<div class='reg_lable'>姓名</div><input type="text" id="input-name" placeholder="您真实姓名" />
+			<br/>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">提 交</button>
+		</form>
+	<div>
+	
+</body>
+</html>
