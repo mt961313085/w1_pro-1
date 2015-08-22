@@ -9,12 +9,12 @@
 	
 	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.config.js'></script>
     <script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.all.min.js'> </script>
-	<script type="text/javascript" charset="utf-8" src='js-lib/ueditor1_4_3-utf8-php/lang/zh-cn/zh-cn.js'></script>
+	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/lang/zh-cn/zh-cn.js'></script>
 	
 	<style type='text/css'>
 		.race_set_div{position:relative;left:400px;width:800px;background:#f5f5f5}
 		h2{font-size:30px;margin-top:20px;margin-bottom:32px}
-		.race_set_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:680px;height:44px;border-radius:0}
+		.race_set_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:680px;height:44px;margin:0 1em 1em 0}
 		.race_set_div input:focus{border-color:#00a2e8;box-shadow:0 0 8px rgba(0,162,232,1),0 0 5px rgba(0,162,232,.75)}
 		.race_set_div input[type=date]{width:280px;position:relative;left:-3px;margin-right:-6px}
 		input[type=file]{width:100%}
@@ -29,11 +29,11 @@
 		.droppable{width:100%;height:100%;text-align:center}
 		
 		#f_u{display:none}
-		ul.upload_file{width:100%;margin-bottom:10px}
+		ul.main_banner{width:100%;margin-bottom:10px}
 		
 		div.list_div{width:100%}
 		
-		.race_set_div select{width:100px;font-family:"Microsoft Yahei";position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		.race_set_div select{width:100px;font-family:'Microsoft Yahei';position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
 		#input-id{width:236px}
 		
 		.race_set_div button{margin-left:175px;background-color:#524769;cursor:pointer;color:#fff;width:120px;height:44px}	
@@ -47,19 +47,20 @@
 	<div class='race_set_div'>
 		<input type='file' id='f_u' name='selectFiles'/>
 		<form action='' method='post'>
-			<h2 class="login-heading">新建比赛</h2>
+			<h2 class='login-heading'>新建比赛</h2>
 			
-			<span class='race_set_lable'>比赛名称：</span><input type="text" id="input-race-name" placeholder="比赛名称（必填）" required='required' autofocus='autofocus' />
+			<span class='race_set_lable'>比赛名称：</span><input type='text' id='input-race-name' placeholder='比赛名称（必填）' required='required' autofocus='autofocus' />
 			<br/>
 			<span class='race_set_lable'>比赛时间：</span>
-			<input type="date" id="input-race-time1" name='race-start-date' placeholder="比赛开始时间（必填）" required='required' />
+			<input type='date' id='input-race-time1' name='race-start-date' placeholder='比赛开始时间（必填）' required='required' />
 			<div class='line'></div>
-			<input type="date" id="input-race-time2" name='race-end-date' placeholder="比赛结束时间（必填）" required='required' />
+			<input type='date' id='input-race-time2' name='race-end-date' placeholder='比赛结束时间（必填）' required='required' />
 			<br/>
 			<p class='race_set_lable'>首页banner</p>
 			<div class='file_upload_plugin'>
 				<div id='file_upload_area' class='droppable' draggable='true'>
 					<img />
+					<a id='banner_close' class='fa fa-close'></a>
 				</div>
 				<a class='upload'>上传</a>
 				<a class='browse'>浏览</a>
@@ -67,10 +68,10 @@
 			<br/>
 			
 			<p class='race_set_lable'>比赛规程</p>
-			<script id="editor" type="text/plain" style="width:100%;height:500px;"></script>
+			<script id='editor' type='text/plain' style='width:100%;height:500px;'></script>
 			<br/>
 			<p class='race_set_lable'>相关模板上传</p>
-			<ul class='upload_file'></ul>
+			<ul class='main_banner'></ul>
 			<input type='file' name='upload_template'/>
 			<br/>
 			
@@ -78,29 +79,33 @@
 			<span class='race_set_lable'>比赛报名</span>
 			<br/>
 			<span class='race_set_lable'>报名时间：</span>
-			<input type="date" id="input-reg-time1" name='reg-start-date' placeholder="报名开始时间（必填）" required='required' />
+			<input type='date' id='input-reg-time1' name='reg-start-date' placeholder='报名开始时间（必填）' required='required' />
 			<div class='line'></div>
-			<input type="date" id="input-reg-time2" name='reg-end-date' placeholder="报名结束时间（必填）" required='required' />
+			<input type='date' id='input-reg-time2' name='reg-end-date' placeholder='报名结束时间（必填）' required='required' />
 			<br/>
 			<input type='file' name='upload_reg_page' />
 			<br/>
 			
 			<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
-			<span class='race_set_lable'>比赛分组</span><a class='fa fa-plus'></a>
+			<span class='race_set_lable'>比赛分组</span><a id='race_add_group' class='fa fa-plus'></a>
 			<br/>
-			<input type="text" placeholder="默认组" required='required' />
+			<div class='race_group_div'>
+				<input type='text' placeholder='默认组' required='required' />
+			</div>
 			<br/>
 			<div class='list_div'></div>
 			<br/>
 			
 			<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
-			<span class='race_set_lable'>作品评审</span>
+			<span class='race_set_lable'>作品评审</span><a id='race_expert_num_add' style='margin-left:18px' class='fa fa-plus'></a>
 			<br/>
 			<span class='race_set_lable'>每组由</span>
-			<input style='margin-right:18px;text-align:center;width:48px' type="text" placeholder="1" />
+			<span id='race_expert_num' style='font-size:18px;margin-right:18px;text-align:center;width:48px'>1</span>
 			<span class='race_set_lable'>位专家评审</span>
 			<br/>
-			<input type="text" placeholder='指定评审专家' /><a style='margin-left:18px' class='fa fa-plus'></a>
+			<div id='race_expert_set_div'>
+				<input type="text" placeholder='指定评审专家' /><a style='margin-left:18px' class='fa fa-user-plus'></a>
+			</div>
 			<br/>
 			
 			<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
@@ -117,7 +122,143 @@
 	
 	
 	<script type="text/javascript">
-		var ue = UE.getEditor('editor');	
+		var ue = UE.getEditor( 'editor' );	
+		
+		$('#banner_close').click( function() {
+			var target = $(this);
+			target.prev('img').attr('src','');
+			target.prev('img').css( {'width':0,'height':0} );
+			main_banner = '';
+		} );
+		
+		$('#race_add_group').click( function() {
+			var target = $('.race_group_div');
+			var num = target.children('input[type=text]').size();
+			target.append( $("<input type='text' placeholder='分组"+(num+1)+"' required='required' />") );
+			var del = $( "<a class='fa fa-minus race-group-del'></a>" );
+			target.append( del );
+			
+			del.click( function() {
+				var target = $( this );
+				target.prev('input[type=text]').remove();
+				target.remove();			
+			} );
+
+		} );
+		
+		$('#race_expert_num_add').click( function() {
+	
+			var target = $('#race_expert_set_div');
+			
+			target.append( $("<input type='text' placeholder='指定评审专家' />") );
+			var user_add = $( "<a style='margin-left:18px' class='fa fa-user-plus'></a>" );
+			target.append( user_add );
+			var minus = $( "<a style='margin-left:18px' class='fa fa-minus'></a>" );
+			target.append( minus );
+			
+			var inputs = target.children('input[type=text]');
+			$('#race_expert_num').html( inputs.size() );
+			
+			minus.click( function() {
+				var target = $( this );
+				target.prev('a.fa-user-plus' ).remove();
+				target.prev('input[type=text]').remove();
+				target.remove();
+				
+				var inputs = $('#race_expert_set_div').children('input[type=text]');
+				$('#race_expert_num').html( inputs.size() );
+			} );
+			
+		} );
+		
 	</script>
+	
+	<script>
+		var main_banner;
+		
+		$( function() {
+		
+			$('#file_upload_area').bind( {
+				drop: function(e) {
+				
+					e.preventDefault();
+					var oe = e.originalEvent;
+					var file_list = oe.dataTransfer.files;
+				
+					show_image( file_list );
+				},
+				dragover: function(e) {
+					e.preventDefault();
+					return true;
+				}
+			} );
+		
+			$('.file_upload_plugin a.upload').click( function() {
+				
+				if( typeof(main_banner)!='undefined' ) {
+					var reader = new FileReader();
+/*
+					reader.onload = function() {
+						$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
+							console.log( res );
+							//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
+						} );
+					};
+					
+					reader.readAsBinaryString( main_banner );
+*/
+				}
+			} );
+			
+			$('.file_upload_plugin a.browse').click( function(e) {
+				$('#f_u').trigger('click');
+			} );
+			
+			$('#f_u').change( function() {	
+				main_banner = this.files[0];
+				show_image( this.files );
+			} );
+						
+		} );
+	</script>
+	
+	<script>
+		function show_image( file_list ) {
+		
+			if( file_list.length>0 ) {
+						
+				main_banner = file_list[0];
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					var image = $('#file_upload_area').children('img');
+					image.bind( 'load', function() {
+						var r1 = $('#file_upload_area').height() / $('#file_upload_area').width();
+						var img = $('#file_upload_area img');
+						var r2 = img.height() / img.width();
+						
+						if( r2<r1 ) {
+							img.css('width','100%');
+							img.css('height','auto');
+							
+							var m_top = ( $('#file_upload_area').height()-img.height() ) / 2;
+							img.css('margin-top',m_top);
+						}
+						else {
+							img.css('height','100%');
+							img.css('width','auto');
+							img.css('margin','auto');
+						}
+						
+					} );
+					image.attr('src', this.result);
+				};
+				
+				reader.readAsDataURL( main_banner );
+				
+			}
+		};
+	</script>
+	
 </body>
 </html>
