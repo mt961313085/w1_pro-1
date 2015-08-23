@@ -184,7 +184,7 @@
 					e.preventDefault();
 					var oe = e.originalEvent;
 					var file_list = oe.dataTransfer.files;
-				
+					main_banner = file_list[0];
 					show_image( file_list );
 				},
 				dragover: function(e) {
@@ -214,7 +214,7 @@
 				$('#f_u').trigger('click');
 			} );
 			
-			$('#f_u').change( function() {	
+			$('#f_u').change( function(e) {	
 				main_banner = this.files[0];
 				show_image( this.files );
 			} );
