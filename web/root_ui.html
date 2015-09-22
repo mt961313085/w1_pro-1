@@ -12,11 +12,18 @@
 	<link rel="stylesheet" href="css/background/css/default.css" />
 	<link rel="stylesheet" href="css/background/css/style.css" />
 	<link rel="stylesheet" href="css/background/css/font-awesome.min.css" />
+	<link rel='stylesheet' type='text/css' href='css/style.css'>
+		
+	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.config.js'></script>
+    <script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.all.min.js'> </script>
+	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/lang/zh-cn/zh-cn.js'></script>
 	
 	<script src='./my-js/root_ui/root_ui.js'></script>
 
-	<style type='text/css'>
+	<link href="js-lib/jquery-ui.min.css" rel="stylesheet">
+	<script src="js-lib/jquery-ui.min.js"></script>
 		
+	<style type='text/css'>
 		table.user_table{width:100%;border-spacing:0 16px}
 		table.user_table tr{width:100%;height:42px}
 		table.user_table tr:nth-child(odd){background:#eee}
@@ -51,11 +58,61 @@
 
 	</style>
 	
+	<!-- create race css -->
+	<style type='text/css'>
+		.race_set_div{position:relative;padding:10px;width:100%;background:#f5f5f5}
+		h2{font-size:30px;margin-top:20px;margin-bottom:32px}
+		.race_set_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:680px;height:44px;margin:0 1em 1em 0}
+		.race_set_div input:focus{border-color:#00a2e8;box-shadow:0 0 8px rgba(0,162,232,1),0 0 5px rgba(0,162,232,.75)}
+		.race_set_div input[type=date]{width:280px;position:relative;left:-3px;margin-right:-6px}
+		input[type=file]{width:100%}
+		.line{display:inline-block;width:50px;height:22px;border-bottom:solid 2px #aaa;margin:0 33px}
+		
+		.race_set_lable{font-size:18px;margin:0 1em 1.5em 0;color:#000;text-align:right;display:inline-block;height:44px;line-height:44px}
+		p.race_set_lable{display:block;text-align:left;margin-bottom:10px}
+		
+		.file_upload_plugin{width:100%;height:250px;border:solid 2px #aaa;padding:2px}
+		.file_upload_plugin a{width:40px;height:2em;margin-top:10px;float:right;overflow:hidden}
+		a.upload{margin-right:0;margin-left:20px}		
+		.droppable{width:100%;height:100%;text-align:center}
+		
+		#f_u{display:none}
+		ul.main_banner{width:100%;margin-bottom:10px}
+		
+		div.list_div{width:100%}
+		
+		.race_set_div select{width:100px;font-family:'Microsoft Yahei';position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		#input-id{width:236px}
+		
+		.race_set_div button{margin-left:175px;background-color:#524769;cursor:pointer;color:#fff;width:120px;height:44px}	
+		.race_set_div button:hover{border-color:#204d74;background-color:#286090}
+		.race_set_div #b_ok{margin-left:30%}
+	</style>
+	
+	<!--  注册/添加新用户css -->
+	<style type='text/css'>
+		.login_div{display:none;position:absolute;padding:10px;width:489px;background:#f5f5f5}
+		h2{font-size:30px;margin-top:20px;margin-bottom:32px}
+		.login_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:340px;height:44px;border-radius:0}
+		.login_div input:focus{border-color:#00a2e8;box-shadow:0 0 8px rgba(0,162,232,1),0 0 5px rgba(0,162,232,.75)}
+		
+		
+		div.reg_lable{margin-bottom:1.5em;color:#fff;text-align:center;display:inline-block;height:44px;width:128px;background:#93B9C6;line-height:44px}
+		.login_div select{width:100px;font-family:"Microsoft Yahei";position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		#input-id{width:236px}
+		
+		.login_div button{margin-left:175px;background-color:#524769;cursor:pointer;color:#fff;width:120px;height:44px}	
+		.login_div button:hover{border-color:#204d74;background-color:#286090}
+		
+		.login_div i.fa{position:absolute;top:10px;right:10px}
+		.login_div i.fa:hover{opacity:0.5}
+	</style>
+	
 </head>
 
 <body>
 	<div class="htmleaf-container">
-
+	
 		<div class="container pb30">
 			<div class="clear-backend">
 			<div class="avatar">
@@ -75,6 +132,7 @@
 			
 			<input type="radio" class="tab-2" name="tab">
 			<span>新的比赛</span><i class="fa fa-lightbulb-o"></i>
+			<div class='side_bar'></div>
 			
 			<!-- tab-top-bar -->
 			<div class="top-bar">
@@ -95,7 +153,7 @@
 						<span>
 							<input type='search' placeholder='Search'/><a class='icon_search'><i class='fa fa-search'></i></a>
 						</span>
-						<a title='增加用户'><i class='fa fa-user-plus'></i></a>
+						<a title='增加用户' class='a_user_add'><i class='fa fa-user-plus'></i></a>	
 					</div>
 					
 					<table class="user_table hover_table">
@@ -110,34 +168,303 @@
 						</tbody>
 					</table>
 				</section>
+				
 				<section class="tab-item-2">
-					<h1>Two</h1>
+					<div class='race_set_div'>
+						<input type='file' id='f_u' name='selectFiles'/>
+						<form action='' method='post'>
+							<h2 class='login-heading'>新建比赛</h2>
+							
+							<span class='race_set_lable'>比赛名称：</span><input type='text' id='input-race-name' placeholder='比赛名称（必填）' required='required' autofocus='autofocus' />
+							<br/>
+							<span class='race_set_lable'>比赛时间：</span>
+							<input type='date' id='input-race-time1' name='race-start-date' placeholder='比赛开始时间（必填）' required='required' />
+							<div class='line'></div>
+							<input type='date' id='input-race-time2' name='race-end-date' placeholder='比赛结束时间（必填）' required='required' />
+							<br/>
+							<p class='race_set_lable'>首页banner</p>
+							<div class='file_upload_plugin'>
+								<div id='file_upload_area' class='droppable' draggable='true'>
+									<img />
+									<a id='banner_close' class='fa fa-close'></a>
+								</div>
+								<a class='upload'>上传</a>
+								<a class='browse'>浏览</a>
+							</div>
+							<br/>
+							
+							<p class='race_set_lable'>比赛规程</p>
+							<script id='editor' type='text/plain' style='width:100%;height:500px;'></script>
+							<br/>
+							<p class='race_set_lable'>相关模板上传</p>
+							<ul class='main_banner'></ul>
+							<input type='file' name='upload_template'/>
+							<br/>
+							
+							<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
+							<span class='race_set_lable'>比赛报名</span>
+							<br/>
+							<span class='race_set_lable'>报名时间：</span>
+							<input type='date' id='input-reg-time1' name='reg-start-date' placeholder='报名开始时间（必填）' required='required' />
+							<div class='line'></div>
+							<input type='date' id='input-reg-time2' name='reg-end-date' placeholder='报名结束时间（必填）' required='required' />
+							<br/>
+							<input type='file' name='upload_reg_page' />
+							<br/>
+							
+							<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
+							<span class='race_set_lable'>比赛分组</span><a id='race_add_group' class='fa fa-plus'></a>
+							<br/>
+							<div class='race_group_div'>
+								<input type='text' placeholder='默认组' required='required' />
+							</div>
+							<br/>
+							<div class='list_div'></div>
+							<br/>
+							
+							<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
+							<span class='race_set_lable'>作品评审</span><a id='race_expert_num_add' style='margin-left:18px' class='fa fa-plus'></a>
+							<br/>
+							<span class='race_set_lable'>每组由</span>
+							<span id='race_expert_num' style='font-size:18px;margin-right:18px;text-align:center;width:48px'>1</span>
+							<span class='race_set_lable'>位专家评审</span>
+							<br/>
+							<div id='race_expert_set_div'>
+								<input type="text" placeholder='指定评审专家' /><a style='margin-left:18px' class='fa fa-user-plus'></a>
+							</div>
+							<br/>
+							
+							<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
+													
+							<button id='b_ok'>确定</button><button>取消</button>
+					
+						</form>
+					</div>
 				</section>
+				
 				<section class="tab-item-3">
-					<h1>Three</h1>
+					<div class='tool_bar'>
+						<span>
+							<input type='search' placeholder='Search'/><a class='icon_search'><i class='fa fa-search'></i></a>
+						</span>
+						<a title='新团队' class='a_team_add'><i class='fa fa-user-plus'></i></a>	
+					</div>
+					
+					<table class="user_table hover_table">
+						<tbody>
+							<tr style='background:#aaa;color:#fff'>
+								<th width='7%'>ID</th>
+								<th width='30%'>团队名称</th>
+								<th width='10%'>负责人</th>
+								<th width='20%'>注册时间</th>
+								<th width='13%'>成员人数</th>
+								<th class='user_set'>设置</th>
+							</tr>
+						</tbody>
+					</table>
 				</section>
 			</div>
 		</div>
 	</div>
 	
+	<div class='login_div'>
+		<i class='fa fa-close'></i>
+		<form action='' method='post'>
+			<h2 class="login-heading">注 册</h2>
+			<div class='reg_lable'>电子邮件</div><input type="email" id="input-email" placeholder="电子邮件地址（必填）" required='required' autofocus='autofocus' />
+			<br/>
+			<div class='reg_lable'>证件类型</div>
+			<select name='id_type'> 
+				<option value='0'>学生证</option> 
+				<option value='1'>身份证</option> 
+			</select> 
+			<input type="text" id="input-id" placeholder="证件号（必填）" required='required' />
+			<br/>
+			<div class='reg_lable'>身份</div>
+			<select name='role'> 
+				<option value='0'>学生个人</option> 
+				<option value='1'>工作人员</option> 
+				<option value='2'>指导老师</option>
+				<option value='3'>评审专家</option> 
+				<option value='4'>投资人</option> 
+			</select>
+			
+			<div class='reg_lable'>性别</div>
+			<select name='sex' style='width:108px'> 
+				<option value='0'>女</option> 
+				<option value='1'>男</option> 
+			</select>
+			
+			<br/>
+			<div class='reg_lable'>密码</div><input type="password" id="input-password" placeholder="密码（必填）" required='required' />
+			<br/>
+			<div class='reg_lable'>密码确认</div><input type="password" id="input-password" placeholder="再次输入密码（必填）" required='required' />
+			
+			<br/><br/><br/>
+			<div class='reg_lable'>学院/机构</div><input type="text" id="input-com" placeholder="所在学院或单位" />
+			<br/>
+			<div class='reg_lable'>姓名</div><input type="text" id="input-name" placeholder="您真实姓名" />
+			<br/>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">提 交</button>
+		</form>
+	</div>
+					
 	<script>
 		$( function() {
-		
+			
+			$('.login_div').draggable();
+			
+			$('.login_div i.fa-close').click( function() { $('.login_div').hide(); } );
+			
 			var user_tab = $('.tab-content .tab-item-1 .user_table');
 			list_user( user_tab );
-			
-			$('input[type="radio"]').click( function() {
-				console.log('www');
-				/*
-				if( $(this).attr('class')=='tab-1' )
-					$('.tab-item-1').css('display','block');
-				
-				if( $(this).attr('class')=='tab-2' )
-					$('.tab-item-2').css('display','block');
-			*/
+					
+			$('a.a_user_add').click( function(e) {
+				var t = $('.login_div');
+				t.css( {'left':(e.pageX-469)+'px','top':e.pageY+'px'} );
+				t.show();
 			} );
+			
 		} )
 	</script>
 	
+	<script type="text/javascript">
+		var ue = UE.getEditor( 'editor' );	
+		
+		$('#banner_close').click( function() {
+			var target = $(this);
+			target.prev('img').attr('src','');
+			target.prev('img').css( {'width':0,'height':0} );
+			main_banner = '';
+		} );
+		
+		$('#race_add_group').click( function() {
+			var target = $('.race_group_div');
+			var num = target.children('input[type=text]').size();
+			target.append( $("<input type='text' placeholder='分组"+(num+1)+"' required='required' />") );
+			var del = $( "<a class='fa fa-minus race-group-del'></a>" );
+			target.append( del );
+			
+			del.click( function() {
+				var target = $( this );
+				target.prev('input[type=text]').remove();
+				target.remove();			
+			} );
+
+		} );
+		
+		$('#race_expert_num_add').click( function() {
+	
+			var target = $('#race_expert_set_div');
+			
+			target.append( $("<input type='text' placeholder='指定评审专家' />") );
+			var user_add = $( "<a style='margin-left:18px' class='fa fa-user-plus'></a>" );
+			target.append( user_add );
+			var minus = $( "<a style='margin-left:18px' class='fa fa-minus'></a>" );
+			target.append( minus );
+			
+			var inputs = target.children('input[type=text]');
+			$('#race_expert_num').html( inputs.size() );
+			
+			minus.click( function() {
+				var target = $( this );
+				target.prev('a.fa-user-plus' ).remove();
+				target.prev('input[type=text]').remove();
+				target.remove();
+				
+				var inputs = $('#race_expert_set_div').children('input[type=text]');
+				$('#race_expert_num').html( inputs.size() );
+			} );
+			
+		} );
+		
+	</script>
+	
+	<script>
+		var main_banner;
+		
+		$( function() {
+		
+			$('#file_upload_area').bind( {
+				drop: function(e) {
+				
+					e.preventDefault();
+					var oe = e.originalEvent;
+					var file_list = oe.dataTransfer.files;
+					main_banner = file_list[0];
+					show_image( file_list );
+				},
+				dragover: function(e) {
+					e.preventDefault();
+					return true;
+				}
+			} );
+		
+			$('.file_upload_plugin a.upload').click( function() {
+				
+				if( typeof(main_banner)!='undefined' ) {
+					var reader = new FileReader();
+/*
+					reader.onload = function() {
+						$.post( './my-php/file_upload_test.php', {data: $.base64('encode',this.result)}, function( res ) {
+							console.log( res );
+							//$('#f_u').slideUp( 300 ).delay( 800 ).fadeIn( 1000, function() { $(this).val(''); } );
+						} );
+					};
+					
+					reader.readAsBinaryString( main_banner );
+*/
+				}
+			} );
+			
+			$('.file_upload_plugin a.browse').click( function(e) {
+				$('#f_u').trigger('click');
+			} );
+			
+			$('#f_u').change( function(e) {	
+				main_banner = this.files[0];
+				show_image( this.files );
+			} );
+						
+		} );
+	</script>
+	
+	<script>
+		function show_image( file_list ) {
+		
+			if( file_list.length>0 ) {
+						
+				main_banner = file_list[0];
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					var image = $('#file_upload_area').children('img');
+					image.bind( 'load', function() {
+						var r1 = $('#file_upload_area').height() / $('#file_upload_area').width();
+						var img = $('#file_upload_area img');
+						var r2 = img.height() / img.width();
+						
+						if( r2<r1 ) {
+							img.css('width','100%');
+							img.css('height','auto');
+							
+							var m_top = ( $('#file_upload_area').height()-img.height() ) / 2;
+							img.css('margin-top',m_top);
+						}
+						else {
+							img.css('height','100%');
+							img.css('width','auto');
+							img.css('margin','auto');
+						}
+						
+					} );
+					image.attr('src', this.result);
+				};
+				
+				reader.readAsDataURL( main_banner );
+				
+			}
+		};
+	</script>
 </body>
 </html>
