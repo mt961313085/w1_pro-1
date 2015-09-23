@@ -1,0 +1,182 @@
+<html>
+<head>
+	<meta charset='UTF-8'>
+	
+	<link rel='stylesheet' type='text/css' href='css/style.css'>
+	<link rel='stylesheet' href='css/background/css/font-awesome.min.css'>
+		
+	<script src='js-lib/jquery-2.1.1.min.js'></script>
+	
+	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.config.js'></script>
+    <script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/ueditor.all.min.js'> </script>
+	<script type='text/javascript' charset='utf-8' src='js-lib/ueditor1_4_3-utf8-php/lang/zh-cn/zh-cn.js'></script>
+	
+	<style type='text/css'>
+		.race_set_div{position:relative;left:400px;width:800px;background:#f5f5f5}
+		h2{font-size:30px;margin-top:20px;margin-bottom:32px}
+		.race_set_div input{position:relative;z-index:1;border:1px solid #ccc;padding:10px;width:680px;height:44px;margin:0 1em 1em 0}
+		.race_set_div input:focus{border-color:#00a2e8;box-shadow:0 0 8px rgba(0,162,232,1),0 0 5px rgba(0,162,232,.75)}
+		.race_set_div input[type=date]{width:280px;position:relative;left:-3px;margin-right:-6px}
+		input[type=file]{width:100%}
+		.line{display:inline-block;width:50px;height:22px;border-bottom:solid 2px #aaa;margin:0 33px}
+		
+		.race_set_lable{font-size:18px;margin:0 1em 1.5em 0;color:#000;text-align:right;display:inline-block;height:44px;line-height:44px}
+		p.race_set_lable{display:block;text-align:left;margin-bottom:10px}
+		
+		.file_upload_plugin{width:100%;height:250px;border:solid 2px #aaa;padding:2px}
+		.file_upload_plugin a{width:30px;height:2em;margin-top:10px;float:right;overflow:hidden}
+		a.upload{margin-right:0;margin-left:20px}		
+		.droppable{width:100%;height:100%;text-align:center}
+		
+		#f_u{display:none}
+		ul.main_banner{width:100%;margin-bottom:10px}
+		
+		div.list_div{width:100%}
+		
+		.race_set_div select{width:100px;font-family:'Microsoft Yahei';position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		#input-id{width:236px}
+		
+		.race_set_div button{margin-left:175px;background-color:#524769;cursor:pointer;color:#fff;width:120px;height:44px}	
+		.race_set_div button:hover{border-color:#204d74;background-color:#286090}
+	
+	</style>
+	
+	<style>
+		.race_set_div select{width:100px;font-family:"Microsoft Yahei";position:relative;margin-left:-4px;border:1px solid #ccc;padding:10px;height:44px;border-radius:0}
+		.title_img_upload_plugin{width:330px;height:200px;border:solid 2px #aaa;padding:2px}
+		#f_u_2{display:none}
+		#title_img_close{position:absolute;left:300px;margin:10px}
+		.title_img_browse{margin:6px 0;float:right}
+	</style>
+</head>
+
+<body>
+	<div class='race_set_div'>
+		<input type='file' id='f_u_2' name='selectFiles'/>
+		<form action='' method='post'>
+			<h2 class='login-heading'>信息发布</h2>
+			
+			<span class='race_set_lable'>选栏目：</span>
+			<select name='role'> 
+				<option value='0'>新闻</option> 
+				<option value='1'>政策</option> 
+				<option value='2'>讲座</option>
+				<option value='3'>学习</option> 
+			</select>
+			<br/>
+			<span class='race_set_lable'>主标题：</span><input type='text' id='input-title-name' placeholder='主标题（必填）' required='required' autofocus='autofocus' />
+			<br/>
+			<span class='race_set_lable'>副标题：</span><input type='text' id='input-title-name' placeholder='副标题' />
+			<br/>
+			<span class='race_set_lable'>置顶期：</span>
+			<input type='date' id='input-top-time1' name='race-start-date' placeholder='开始时间' />
+			<div class='line'></div>
+			<input type='date' id='input-top-time2' name='race-end-date' placeholder='结束时间'/>
+			<br/>
+			
+			<p class='race_set_lable'>标题图片</p>
+			<div class='title_img_upload_plugin'>
+				<div id='title_img_upload' class='droppable' draggable='true'>
+					<img />
+					<a id='title_img_close' class='fa fa-close'></a>
+				</div>
+				<a class='title_img_browse'>浏览</a>
+			</div>
+			<br/>
+			
+			<p class='race_set_lable'>编辑内容</p>
+			<script id='info_editor' type='text/plain' style='width:100%;height:500px;'></script>
+			<br/>
+			
+			<p class='line' style='margin:30px 0 10px 0;width:100%;border-bottom:solid 10px #ccc'></p>
+			<button>提交</button><button>保存</button>
+	
+		</form>
+	</div>
+	
+	
+	<script type="text/javascript">
+		var main_banner_2;
+		
+		var ue = UE.getEditor( 'info_editor' );	
+		
+		$('#title_img_close').click( function() {
+			var target = $(this);
+			target.prev('img').attr('src','');
+			target.prev('img').css( {'width':0,'height':0} );
+			main_banner_2 = '';
+		} );
+		
+	</script>
+	
+	<script>
+
+		$( function() {
+		
+			$('#title_img_upload').bind( {
+				drop: function(e) {
+				
+					e.preventDefault();
+					var oe = e.originalEvent;
+					var file_list = oe.dataTransfer.files;
+					main_banner_2 = file_list[0];
+					show_image( file_list );
+				},
+				dragover: function(e) {
+					e.preventDefault();
+					return true;
+				}
+			} );
+					
+			$('.title_img_upload_plugin a.title_img_browse').click( function(e) {
+				$('#f_u_2').trigger('click');
+			} );
+			
+			$('#f_u_2').change( function(e) {	
+				main_banner_2 = this.files[0];
+				show_image( this.files );
+			} );
+						
+		} );
+	</script>
+	
+	<script>
+		function show_image( file_list ) {
+		
+			if( file_list.length>0 ) {
+						
+				main_banner_2 = file_list[0];
+				
+				var reader = new FileReader();
+				reader.onload = function() { 
+					var image = $('#title_img_upload').children('img');
+					image.bind( 'load', function() {
+						var r1 = $('#title_img_upload').height() / $('#title_img_upload').width();
+						var img = $('#title_img_upload img');
+						var r2 = img.height() / img.width();
+						
+						if( r2<r1 ) {
+							img.css('width','100%');
+							img.css('height','auto');
+							
+							var m_top = ( $('#title_img_upload').height()-img.height() ) / 2;
+							img.css('margin-top',m_top);
+						}
+						else {
+							img.css('height','100%');
+							img.css('width','auto');
+							img.css('margin','auto');
+						}
+						
+					} );
+					image.attr('src', this.result);
+				};
+				
+				reader.readAsDataURL( main_banner_2 );
+				
+			}
+		};
+	</script>
+	
+</body>
+</html>
